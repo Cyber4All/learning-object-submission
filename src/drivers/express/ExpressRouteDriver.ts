@@ -1111,7 +1111,7 @@ export default class ExpressRouteDriver {
       }),
     );
     router.get(
-      '/:author/:learningObjectName',
+      '/learning-objects/:author/:learningObjectName',
       proxy(LEARNING_OBJECT_SERVICE_URI, {
         proxyReqPathResolver: req => {
           let username = req.params.author;
