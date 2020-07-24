@@ -22,7 +22,7 @@ const LEARNING_OBJECT_SERVICE_URI =
  * changes depending on the lambda function when seperate endpoints are introduced.
  * In the future it would be wise to group our lambda functions under one resource.
  */
-const COA_API = process.env.COA_LAMBDA || 'localhost:4001';
+const COA_API = process.env.COA_LAMBDA || 'localhost:5001';
 
 
 /**
@@ -219,10 +219,11 @@ export default class ExpressAdminRouteDriver {
 
   // Lambda routes
     router.post(
-      '/users/:username/learning-object/:cuid/change-author',
+      '/users/:username/learning-objects/:cuid/change-author',
       proxy(COA_API, {
       proxyReqPathResolver: req => {
         const route = ADMIN_LAMBDA_ROUTES.CHANGE_AUTHOR;
+        console.log(route);
         return route;
       },
     }));
