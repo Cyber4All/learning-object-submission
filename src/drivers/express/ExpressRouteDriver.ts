@@ -407,6 +407,15 @@ export default class ExpressRouteDriver {
       }),
     );
 
+    router.get(
+      '/users/curators/:collection',
+      proxy(USERS_API, {
+        proxyReqPathResolver: req => {
+          return USER_ROUTES.FETCH_COLLECTION_CURATORS(req.params.collection);
+        },
+      }),
+    );
+
     router.post(
       '/users/password',
       proxy(USERS_API, {
