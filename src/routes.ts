@@ -4,6 +4,9 @@ export const USER_ROUTES = {
   FETCH_USER(username: string) {
     return `/users/${encodeURIComponent(username)}`;
   },
+  FETCH_COLLECTION_CURATORS(collection: string) {
+    return `/users/curators/${encodeURIComponent(collection)}`;
+  },
 };
 export const LEARNING_OBJECT_ROUTES = {
   CREATE_LEARNING_OBJECT_REVISION(username: string, learningObjectId: string) {
