@@ -72,6 +72,17 @@ export default class ExpressRouteDriver {
         },
       }),
     );
+
+    // Retrieves the metrics for a collection
+    router.route('/:collection/metrics').get(
+      proxy(LEARNING_OBJECT_SERVICE_URI, {
+        proxyReqPathResolver: req => {
+          console.log(req.params.collection);
+          return `/${encodeURIComponent(req.params.collection)}/metrics`;
+        },
+      }),
+    );
+
     router.get(
       '/outcomes/stats',
       proxy(OUTCOME_API, {
