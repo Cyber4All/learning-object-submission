@@ -314,5 +314,9 @@ export const UTILITY_ROUTES = {
 };
 
 export const ADMIN_LAMBDA_ROUTES = { 
-  CHANGE_AUTHOR: '/dev/changeObjectAuthorHandler',
+  CHANGE_AUTHOR(userId: string, learningObjectId: string) {
+    return `/users/${encodeURIComponent(
+      userId,
+    )}/learning-objects/${encodeURIComponent(learningObjectId)}/change-author`;
+  },
 }
