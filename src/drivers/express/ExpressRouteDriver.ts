@@ -79,7 +79,6 @@ export default class ExpressRouteDriver {
     router.route('/users/:userId/learning-objects/:learningObjectId/change-author').post(
       proxy(COA_API, {
         proxyReqPathResolver: req => {
-        console.log('nopers');
         const userId = req.params.userId;
         const learningObjectId = req.params.learningObjectId;
         const route = ADMIN_LAMBDA_ROUTES.CHANGE_AUTHOR(userId, learningObjectId);
