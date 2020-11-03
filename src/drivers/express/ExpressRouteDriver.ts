@@ -84,7 +84,7 @@ export default class ExpressRouteDriver {
         const route = ADMIN_LAMBDA_ROUTES.CHANGE_AUTHOR(userId, learningObjectId);
         return route;
         },
-      })
+      }),
     );
 
     // Retrieves the metrics for a collection
