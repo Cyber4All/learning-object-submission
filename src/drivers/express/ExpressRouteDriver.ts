@@ -12,6 +12,7 @@ import {
   ADMIN_USER_ROUTES,
   USER_ROUTES,
   UTILITY_ROUTES,
+  ADMIN_LAMBDA_ROUTES,
 } from '../../routes';
 import { SocketInteractor } from '../../interactors/SocketInteractor';
 
@@ -26,6 +27,7 @@ const UTILITY_API = process.env.UTILITY_URI || 'localhost:9000';
 const NOTIFICATION_API = process.env.NOTIFICATION_API || 'localhost:8000';
 const OUTCOME_API = process.env.OUTCOME_API || 'localhost:3000';
 const FEATURED_API = process.env.FEATURED_API || 'localhost:3002';
+const COA_API = process.env.COA_SERVICE || 'localhost:8500';
 
 /**
  * Serves as a factory for producing a router for the express app.rt
@@ -69,6 +71,18 @@ export default class ExpressRouteDriver {
       proxy(FEATURED_API, {
         proxyReqPathResolver: req => {
           return `/featured/learning-objects`;
+        },
+      }),
+    );
+
+     // Lambda routes
+    router.route('/users/:userId/learning-objects/:learningObjectId/change-author').post(
+      proxy(COA_API, {
+        proxyReqPathResolver: req => {
+        const userId = req.params.userId;
+        const learningObjectId = req.params.learningObjectId;
+        const route = ADMIN_LAMBDA_ROUTES.CHANGE_AUTHOR(userId, learningObjectId);
+        return route;
         },
       }),
     );
