@@ -30,9 +30,6 @@ export class ExpressDriver {
 
       // Configure Sentry Route Handler - MUST BE FIRST ROUTE HANDLER
       this.app.use(requestHandler());
-
-      // Configure Helmet Security
-      // helmetConfig.setup(this.app);
     }
 
     // Configure app to log requests
