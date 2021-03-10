@@ -9,6 +9,7 @@ dotenv.config();
 export const enforceTokenAccess = jwt({
   secret: process.env.KEY,
   issuer: process.env.ISSUER,
+  algorithms: ['HS256'],
   getToken: req => {
     return req.cookies.presence;
   },
