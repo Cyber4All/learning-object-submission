@@ -6,10 +6,12 @@ import { enforceTokenAccess } from '../middleware/jwt.config';
 import { ExpressRouteDriver, ExpressAdminRouteDriver } from '../drivers';
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
-import * as socketio from 'socket.io';
+import { Server } from "socket.io";
 import { SocketInteractor } from '../../interactors/SocketInteractor';
 import { config, errorHandler, requestHandler } from 'raven';
 import * as dotenv from 'dotenv';
+
+var url = require('url');
 
 dotenv.config();
 
@@ -77,11 +79,12 @@ export class ExpressDriver {
       ? parseInt(KEEP_ALIVE_TIMEOUT, 10)
       : server.keepAliveTimeout;
 
-    let io = socketio(server, { pingInterval: 2000, pingTimeout: 5000 });
+    let io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 });
     let socketInteractor = SocketInteractor.init(io);
 
     io.on('connect', socket => {
-      socketInteractor.connectUser(socket.request._query.user, socket.conn.id);
+      const query = url.parse(socket.request.url, true).query;
+      socketInteractor.connectUser(query.user, socket.conn.id);
 
       socket.on('close', () => {
         socket.disconnect(true);
