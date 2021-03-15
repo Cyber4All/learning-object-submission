@@ -61,10 +61,13 @@ export class SocketInteractor {
         }
 
         for (let i = 0; i < users.length; i++) {
-            let socket = namespace.connected[this.connectedUsers.get(users[i])];
-            if (socket) {
-                socket.emit('message', message);
-            }
+            namespace.use(async (socket, next) => {
+                let s = socket.connected[this.connectedUsers.get(users[i])];
+                if (s) {
+                    s.emit('message', message);
+                }
+                next();
+            });
         }
     }
 }
