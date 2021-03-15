@@ -1,6 +1,6 @@
 {
   "name": "clark-gateway",
-  "version": "2.26.5",
+  "version": "2.26.6",
   "description": "",
   "main": "app.js",
   "scripts": {
