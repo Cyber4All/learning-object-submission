@@ -82,7 +82,7 @@ export class ExpressDriver {
     let io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 });
     let socketInteractor = SocketInteractor.init(io);
 
-    io.on('connect', socket => {
+    io.on('connect', (socket: any) => {
       const query = url.parse(socket.request.url, true).query;
       socketInteractor.connectUser(query.user, socket.conn.id);
 
@@ -91,7 +91,7 @@ export class ExpressDriver {
         socketInteractor.disconnectClient(socket.conn.id);
       });
 
-      socket.on('disconnect', reason => {
+      socket.on('disconnect', (reason: any) => {
         console.log('Unexpected disconnect! Reason: ', reason);
         socketInteractor.disconnectClient(socket.conn.id);
       });
