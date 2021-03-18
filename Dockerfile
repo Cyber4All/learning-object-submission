@@ -33,8 +33,8 @@ WORKDIR /opt
 COPY --from=builder /opt/ .
 
 # Uninstall dev dependencies for the production image
-# WORKDIR /opt
-# RUN npm uninstall --only=dev
+WORKDIR /opt
+RUN npm uninstall --only=dev
 
 WORKDIR /opt/app/dist
 # Run the container! Using the node command instead of npm allows for better passing of signals
