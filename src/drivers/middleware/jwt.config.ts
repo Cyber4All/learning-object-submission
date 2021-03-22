@@ -17,6 +17,8 @@ export const enforceTokenAccess = jwt({
   // Routes that don't require authorization
   path: [
     '/',
+    '/docs',
+    '/docs/swagger.json',
     { url: /\/users\/[0-z,.,-]+/i, methods: ['GET'] },
     /\/clientversion\/[0-z,.,-]/,
     /\/users\/curators\/[0-z,.,-]/, //curator route

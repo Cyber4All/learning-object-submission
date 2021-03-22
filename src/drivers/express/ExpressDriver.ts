@@ -10,6 +10,7 @@ import { Server } from "socket.io";
 import { SocketInteractor } from '../../interactors/SocketInteractor';
 import { config, errorHandler, requestHandler } from 'raven';
 import * as dotenv from 'dotenv';
+import { SwaggerDriver } from '../swagger/SwaggerDriver';
 
 var url = require('url');
 
@@ -70,6 +71,8 @@ export class ExpressDriver {
      */
     const port = process.env.PORT || '3000';
     this.app.set('port', port);
+
+    SwaggerDriver.buildDocs(this.app);
 
     /**
      * Create HTTP server.
