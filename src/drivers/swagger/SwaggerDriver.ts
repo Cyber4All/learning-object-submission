@@ -24,13 +24,12 @@ export class SwaggerDriver {
                         url: 'https://www.isc.org/licenses/'
                     },
                     contact: {
-                        name: 'SecurEd Inc.',
-                        url: 'https://clark.center',
+                        name: 'SecurEd Inc',
+                        url: 'http://secured.team/',
                         email: 'skaza@towson.edu'
                     },
                     "x-logo": {
                         url: "http://secured.team/assets/images/logo.png",
-                        backgroundColor: "#FFFFFF",
                         altText: "CLARK Logo"
                     }
                 },
