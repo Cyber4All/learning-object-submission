@@ -120,7 +120,7 @@ export class LibraryServiceController implements Controller {
          *              description: UNAUTHORIZED - User is trying to access another user's library
          */
         router.get(
-            '/:username/library/learning-objects',
+            '/users/:username/library/learning-objects',
             this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}/library/learning-objects?${querystring.stringify(req.query)}`)
         );
 
@@ -153,7 +153,7 @@ export class LibraryServiceController implements Controller {
          *              description: UNAUTHORIZED - User is trying to access and modify another user's library
          */
         router.delete(
-            '/:username/library/learning-objects/:cuid',
+            '/users/:username/library/learning-objects/:cuid',
             this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}/library/learning-objects/${encodeURIComponent(req.params.cuid)}?${querystring.stringify(req.query)}`)
         );
 
@@ -203,7 +203,7 @@ export class LibraryServiceController implements Controller {
          *              description: UNAUTHORIZED - User is trying to access and modify another user's library
          */
         router.post(
-            '/:username/library/learning-objects',
+            '/users/:username/library/learning-objects',
             this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}/library/learning-objects`)
         );
 
