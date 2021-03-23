@@ -10,6 +10,15 @@ import { Server } from "socket.io";
 import { SocketInteractor } from '../../interactors/SocketInteractor';
 import { config, errorHandler, requestHandler } from 'raven';
 import * as dotenv from 'dotenv';
+import { SwaggerDriver } from '../swagger/SwaggerDriver';
+import { FeatureServiceController } from '../../modules/feature-service/FeatureServiceController';
+import { GuidelineServiceController } from '../../modules/guideline-service/GuidelineServiceController';
+import { LearningObjectServiceController } from '../../modules/learning-object-service/LearningObjectServiceController';
+import { LibraryServiceController } from '../../modules/library-service/LibraryServiceController';
+import { NotificationServiceController } from '../../modules/notification-service/NotificationServiceController';
+import { RatingServiceController } from '../../modules/rating-service/RatingServiceController';
+import { UserServiceController } from '../../modules/user-service/UserServiceController';
+import { UtilityServiceController } from '../../modules/utility-service/UtilityServiceController';
 
 var url = require('url');
 
@@ -65,11 +74,23 @@ export class ExpressDriver {
     // Set Admin Middleware
     this.app.use('/admin', ExpressAdminRouteDriver.buildRouter());
 
+    // Set up the different controllers
+    this.app.use(new FeatureServiceController().buildRouter());
+    this.app.use(new GuidelineServiceController().buildRouter());
+    this.app.use(new LearningObjectServiceController().buildRouter());
+    this.app.use(new LibraryServiceController().buildRouter());
+    this.app.use(new NotificationServiceController().buildRouter());
+    this.app.use(new RatingServiceController().buildRouter());
+    this.app.use(new UserServiceController().buildRouter());
+    this.app.use(new UtilityServiceController().buildRouter());
+
     /**
      * Get port from environment and store in Express.
      */
     const port = process.env.PORT || '3000';
     this.app.set('port', port);
+
+    SwaggerDriver.buildDocs(this.app);
 
     /**
      * Create HTTP server.
