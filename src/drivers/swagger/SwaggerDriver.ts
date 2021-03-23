@@ -31,7 +31,13 @@ export class SwaggerDriver {
                     "x-logo": {
                         url: "http://secured.team/assets/images/logo.png",
                         altText: "CLARK Logo"
-                    }
+                    },
+                    "x-tagGroups": [
+                        {
+                            name: "Library Service",
+                            tags: ['Library Service']
+                        }
+                    ],
                 },
                 servers: [
                     {

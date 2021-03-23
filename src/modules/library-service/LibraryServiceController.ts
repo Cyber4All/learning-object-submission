@@ -14,6 +14,8 @@ export class LibraryServiceController implements Controller {
          * /learning-objects/metrics:
          *  get:
          *      description: Gets the learning object metrics for CLARK
+         *      tags:
+         *          - Library Service
          *      responses:
          *          200:
          *              description: OK
@@ -34,6 +36,8 @@ export class LibraryServiceController implements Controller {
          * /users/{username}/learning-objects/{cuid}/metrics:
          *  get:
          *      description: Gets the metrics for a learning object
+         *      tags:
+         *          - Library Service
          *      parameters:
          *          - in: path
          *            name: username
@@ -76,6 +80,8 @@ export class LibraryServiceController implements Controller {
          * /{username}/library/learning-objects:
          *  get:
          *      description: Gets a user's library
+         *      tags:
+         *          - Library Service
          *      parameters:
          *          - in: path
          *            name: username
@@ -129,6 +135,8 @@ export class LibraryServiceController implements Controller {
          * /{username}/library/learning-objects/{cuid}:
          *  delete:
          *      description: Deletes an item from the user's library
+         *      tags:
+         *          - Library Service
          *      parameters:
          *          - in: path
          *            name: username
@@ -162,6 +170,8 @@ export class LibraryServiceController implements Controller {
          * /{username}/library/learning-objects:
          *  post:
          *      description: Adds a learning object to the user's library
+         *      tags:
+         *          - Library Service
          *      parameters:
          *          - in: path
          *            name: username
