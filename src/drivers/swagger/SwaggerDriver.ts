@@ -47,7 +47,7 @@ export class SwaggerDriver {
                 ]
             },
             apis: [
-                '../../modules/*.ts',
+                './src/modules/**/*.ts',
             ]
         };
 
