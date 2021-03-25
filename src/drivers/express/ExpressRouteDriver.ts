@@ -17,7 +17,6 @@ import {
 import { SocketInteractor } from '../../interactors/SocketInteractor';
 
 const USERS_API = process.env.USERS_API || 'localhost:4000';
-const CART_API = process.env.CART_API || 'localhost:3006';
 const RATING_API = process.env.RATING_API || 'localhost:3004';
 const LEARNING_OBJECT_SERVICE_URI =
   process.env.LEARNING_OBJECT_SERVICE_URI || 'localhost:5000';
@@ -312,15 +311,6 @@ export default class ExpressRouteDriver {
         }),
       );
 
-    router.get(
-      '/learning-objects/metrics',
-      proxy(CART_API, {
-        proxyReqPathResolver: req => {
-          return `/learning-objects/metrics`;
-        },
-      }),
-    );
-
     router.route('/users/:username/learning-objects/:id')
       .all(proxy(LEARNING_OBJECT_SERVICE_URI, {
         proxyReqPathResolver: req => {
@@ -331,16 +321,6 @@ export default class ExpressRouteDriver {
           return uri;
         },
       }));
-
-    // Retrieves the metrics for a learning object
-    router.get(
-      '/users/:username/learning-objects/:cuid/metrics',
-      proxy(CART_API, {
-        proxyReqPathResolver: req => {
-          return `/users/${encodeURIComponent(req.params.username)}/learning-objects/${encodeURIComponent(req.params.cuid)}/metrics`;
-        },
-      }),
-    );
 
     // Retrieves the materials for a learning object
     router.get(
@@ -799,33 +779,6 @@ export default class ExpressRouteDriver {
           } catch (e) {
             return proxyResData;
           }
-        },
-      }),
-    );
-    router.get(
-      '/:username/library/learning-objects',
-      proxy(CART_API, {
-        // get library
-        proxyReqPathResolver: req => {
-          return `/users/${encodeURIComponent(req.params.username)}/library/learning-objects?${querystring.stringify(req.query)}`;
-        },
-      }),
-    );
-    router.delete(
-      '/:username/library/learning-objects/:cuid',
-      proxy(CART_API, {
-        // Delete a learning object from the users library
-        proxyReqPathResolver: req => {
-          return `/users/${encodeURIComponent(req.params.username)}/library/learning-objects/${encodeURIComponent(req.params.cuid)}?${querystring.stringify(req.query)}`;
-        },
-      }),
-    );
-    router.post(
-      '/:username/library/learning-objects',
-      proxy(CART_API, {
-        // Add a learning object to the users library
-        proxyReqPathResolver: req => {
-          return `/users/${encodeURIComponent(req.params.username)}/library/learning-objects`;
         },
       }),
     );
