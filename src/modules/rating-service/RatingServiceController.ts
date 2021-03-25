@@ -239,22 +239,222 @@ export class RatingServiceController implements Controller {
             this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}/learning-objects/${encodeURIComponent(req.params.CUID)}/version/${encodeURIComponent(req.params.version)}/ratings`)
         );
   
-        // FLAG A RATING
+        /**
+         * @swagger
+         * /users/{username}/learning-objects/{CUID}/version/{version}/ratings/{ratingID}/flags:
+         *  post:
+         *      description: Flags a rating to be reviewed
+         *      tags:
+         *          - Rating Service
+         *      parameters:
+         *          - in: path
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The username of the object's author
+         *          - in: path
+         *            name: CUID
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The cuid of the object
+         *          - in: path
+         *            name: version
+         *            schema:
+         *                type: number
+         *            required: true
+         *            description: The version number of the object
+         *          - in: path
+         *            name: ratingID
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the rating
+         *      requestBody:
+         *          description: The flag information to create
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      $ref: '#/components/schemas/Flag'
+         *      responses:
+         *          204:
+         *              description: NO CONTENT
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - Author is attempting to flag a rating
+         *          404:
+         *              description: NOT FOUND - Learning object or rating was not found
+         */
         router.route('/users/:username/learning-objects/:CUID/version/:version/ratings/:ratingID/flags').post(
             this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}/learning-objects/${encodeURIComponent(req.params.CUID)}/version/${encodeURIComponent(req.params.version)}/ratings/${encodeURIComponent(req.params.ratingID)}/flags`)
         );
   
-        // CREATE A RESPONSE
+        /**
+         * @swagger
+         * /users/{username}/learning-objects/{CUID}/version/{version}/ratings/{ratingID}/responses:
+         *  post:
+         *      description: Creates a response to a rating
+         *      tags:
+         *          - Rating Service
+         *      parameters:
+         *          - in: path
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The username of the object's author
+         *          - in: path
+         *            name: CUID
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The cuid of the object
+         *          - in: path
+         *            name: version
+         *            schema:
+         *                type: number
+         *            required: true
+         *            description: The version number of the object
+         *          - in: path
+         *            name: ratingID
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the rating
+         *      requestBody:
+         *          description: The flag information to create
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      $ref: '#/components/schemas/Response'
+         *      responses:
+         *          200:
+         *              description: OK
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - Is not author or contributor
+         *          404:
+         *              description: NOT FOUND - Learning object or rating was not found
+         */
         router.route('/users/:username/learning-objects/:CUID/version/:version/ratings/:ratingID/responses').post(
             this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}/learning-objects/${encodeURIComponent(req.params.CUID)}/version/${encodeURIComponent(req.params.version)}/ratings/${encodeURIComponent(req.params.ratingID)}/responses`)
         );
   
-        // DELETE A RESPONSE
+        /**
+         * @swagger
+         * /users/{username}/learning-objects/{CUID}/version/{version}/ratings/{ratingID}/responses/{responseID}:
+         *  delete:
+         *      description: Deletes a response
+         *      tags:
+         *          - Rating Service
+         *      parameters:
+         *          - in: path
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The username of the object's author
+         *          - in: path
+         *            name: CUID
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The cuid of the object
+         *          - in: path
+         *            name: version
+         *            schema:
+         *                type: number
+         *            required: true
+         *            description: The version number of the object
+         *          - in: path
+         *            name: ratingID
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the rating
+         *          - in: path
+         *            name: responseID
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the response
+         *      responses:
+         *          200:
+         *              description: OK
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - Is not the creator of the response
+         *          404:
+         *              description: NOT FOUND - Learning object, rating, or response was not found
+         */
         router.route('/users/:username/learning-objects/:CUID/version/:version/ratings/:ratingID/responses/:responseID').delete(
             this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}/learning-objects/${encodeURIComponent(req.params.CUID)}/version/${encodeURIComponent(req.params.version)}/ratings/${encodeURIComponent(req.params.ratingID)}/responses/${encodeURIComponent(req.params.responseID)}`)
         );
   
-        // EDIT A RESPONSE
+        /**
+         * @swagger
+         * /users/{username}/learning-objects/{CUID}/version/{version}/ratings/{ratingID}/responses/{responseID}:
+         *  patch:
+         *      description: Updates a response
+         *      tags:
+         *          - Rating Service
+         *      parameters:
+         *          - in: path
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The username of the object's author
+         *          - in: path
+         *            name: CUID
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The cuid of the object
+         *          - in: path
+         *            name: version
+         *            schema:
+         *                type: number
+         *            required: true
+         *            description: The version number of the object
+         *          - in: path
+         *            name: ratingID
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the rating
+         *          - in: path
+         *            name: responseID
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the response
+         *      requestBody:
+         *          description: The flag information to create
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      $ref: '#/components/schemas/Response'
+         *      responses:
+         *          200:
+         *              description: OK
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - Is not the creator of the response
+         *          404:
+         *              description: NOT FOUND - Learning object, rating, or response was not found
+         */
         router.route('/users/:username/learning-objects/:CUID/version/:version/ratings/:ratingID/responses/:responseID').patch(
             this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}/learning-objects/${encodeURIComponent(req.params.CUID)}/version/${encodeURIComponent(req.params.version)}/ratings/${encodeURIComponent(req.params.ratingID)}/responses/${encodeURIComponent(req.params.responseID)}`)
         );
