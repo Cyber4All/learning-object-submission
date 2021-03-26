@@ -24,7 +24,6 @@ const BUSINESS_CARD_API = process.env.BUSINESS_CARD_API || 'localhost:3009';
 const UTILITY_API = process.env.UTILITY_URI || 'localhost:9000';
 const NOTIFICATION_API = process.env.NOTIFICATION_API || 'localhost:8000';
 const OUTCOME_API = process.env.OUTCOME_API || 'localhost:3000';
-const FEATURED_API = process.env.FEATURED_API || 'localhost:3002';
 const COA_API = process.env.COA_SERVICE || 'localhost:8500';
 
 /**
@@ -57,21 +56,6 @@ export default class ExpressRouteDriver {
         message: 'Welcome to the C.L.A.R.K. Gateway API',
       });
     });
-    // FEATURED ROUTES
-    router.route('/featured/learning-objects').get(
-      proxy(FEATURED_API, {
-        proxyReqPathResolver: req => {
-          return `/featured/learning-objects`;
-        },
-      }),
-    );
-    router.route('/featured/learning-objects').patch(
-      proxy(FEATURED_API, {
-        proxyReqPathResolver: req => {
-          return `/featured/learning-objects`;
-        },
-      }),
-    );
 
      // Lambda routes
     router.route('/users/:userId/learning-objects/:learningObjectId/change-author').post(
