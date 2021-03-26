@@ -36,6 +36,10 @@ export class SwaggerDriver {
                         {
                             name: "Library Service",
                             tags: ['Library Service']
+                        },
+                        {
+                            name: "Outcome Service",
+                            tags: ['Outcome Service']
                         }
                     ],
                 },
