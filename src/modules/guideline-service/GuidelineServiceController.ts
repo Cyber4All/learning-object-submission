@@ -2,7 +2,7 @@ import { Router, Request } from "express";
 import proxy = require("express-http-proxy");
 import { Controller } from "../../interfaces/Controller";
 
-const OUTCOME_API = process.env.OUTCOME_API || 'localhost:3000';
+const OUTCOME_API = process.env.OUTCOME_API || 'localhost:7000';
 
 export class GuidelineServiceController implements Controller {
     buildRouter(): Router {
