@@ -42,8 +42,16 @@ export class SwaggerDriver {
                             tags: ['Notification Service']
                         },
                         {
+                            name: "Feature Service",
+                            tags: ['Feature Service']
+                        },
+                        {
                             name: "Rating Service",
                             tags: ['Rating Service']
+                        },
+                        {
+                            name: "Outcome Service",
+                            tags: ['Outcome Service']
                         }
                     ],
                 },

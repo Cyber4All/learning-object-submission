@@ -22,8 +22,6 @@ const LEARNING_OBJECT_SERVICE_URI =
 const FILE_UPLOAD_API = process.env.FILE_UPLOAD_API || 'localhost:5100';
 const BUSINESS_CARD_API = process.env.BUSINESS_CARD_API || 'localhost:3009';
 const UTILITY_API = process.env.UTILITY_URI || 'localhost:9000';
-const OUTCOME_API = process.env.OUTCOME_API || 'localhost:3000';
-const FEATURED_API = process.env.FEATURED_API || 'localhost:3002';
 const COA_API = process.env.COA_SERVICE || 'localhost:8500';
 
 /**
@@ -56,21 +54,6 @@ export default class ExpressRouteDriver {
         message: 'Welcome to the C.L.A.R.K. Gateway API',
       });
     });
-    // FEATURED ROUTES
-    router.route('/featured/learning-objects').get(
-      proxy(FEATURED_API, {
-        proxyReqPathResolver: req => {
-          return `/featured/learning-objects`;
-        },
-      }),
-    );
-    router.route('/featured/learning-objects').patch(
-      proxy(FEATURED_API, {
-        proxyReqPathResolver: req => {
-          return `/featured/learning-objects`;
-        },
-      }),
-    );
 
      // Lambda routes
     router.route('/users/:userId/learning-objects/:learningObjectId/change-author').post(
@@ -90,15 +73,6 @@ export default class ExpressRouteDriver {
         proxyReqPathResolver: req => {
           console.log(req.params.collection);
           return `/${encodeURIComponent(req.params.collection)}/metrics`;
-        },
-      }),
-    );
-
-    router.get(
-      '/outcomes/stats',
-      proxy(OUTCOME_API, {
-        proxyReqPathResolver: req => {
-          return STATS_ROUTE.OUTCOME_STATS;
         },
       }),
     );
@@ -397,26 +371,6 @@ export default class ExpressRouteDriver {
           return `/users/${encodeURIComponent(req.params.username)}/learning-objects/${encodeURIComponent(
             req.params.learningObjectId,
           )}/outcomes/${encodeURIComponent(req.params.outcomeId)}/mappings`;
-        },
-      }),
-    );
-    // Not in production
-    router.delete(
-      '/users/:username/learning-objects/:learningObjectId/outcomes/:outcomeId/mappings/:mappingId',
-      proxy(OUTCOME_API, {
-        proxyReqPathResolver: req => {
-          return `/users/${encodeURIComponent(req.params.username)}/learning-objects/${encodeURIComponent(
-            req.params.learningObjectId,
-          )}/outcomes/${encodeURIComponent(req.params.outcomeId)}/mappings/${encodeURIComponent(req.params.mappingId)}`;
-        },
-      }),
-    );
-    // Not in production
-    router.get(
-      '/outcomes/stats',
-      proxy(OUTCOME_API, {
-        proxyReqPathResolver: req => {
-          return `/outcomes/stats`;
         },
       }),
     );
