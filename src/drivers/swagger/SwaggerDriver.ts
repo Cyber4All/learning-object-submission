@@ -38,6 +38,10 @@ export class SwaggerDriver {
                             tags: ['Library Service']
                         },
                         {
+                            name: "Notification Service",
+                            tags: ['Notification Service']
+                        },
+                        {
                             name: "Feature Service",
                             tags: ['Feature Service']
                         },
