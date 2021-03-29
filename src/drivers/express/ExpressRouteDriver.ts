@@ -9,14 +9,10 @@ import {
   BUSINESS_CARD_ROUTES,
   FILE_UPLOAD_ROUTES,
   STATS_ROUTE,
-  ADMIN_USER_ROUTES,
-  USER_ROUTES,
   UTILITY_ROUTES,
   ADMIN_LAMBDA_ROUTES,
 } from '../../routes';
-import { SocketInteractor } from '../../interactors/SocketInteractor';
 
-const USERS_API = process.env.USERS_API || 'localhost:4000';
 const LEARNING_OBJECT_SERVICE_URI =
   process.env.LEARNING_OBJECT_SERVICE_URI || 'localhost:5000';
 const FILE_UPLOAD_API = process.env.FILE_UPLOAD_API || 'localhost:5100';
@@ -73,31 +69,6 @@ export default class ExpressRouteDriver {
         proxyReqPathResolver: req => {
           console.log(req.params.collection);
           return `/${encodeURIComponent(req.params.collection)}/metrics`;
-        },
-      }),
-    );
-
-    // GUIDELINE ROLES
-    router.route('/guidelines/members').get(
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/guidelines/members`;
-        },
-      }),
-    );
-
-    router.route('/guidelines/members/:memberId').put(
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/guidelines/members/${encodeURIComponent(req.params.memberId)}`;
-        },
-      }),
-    );
-
-    router.route('/guidelines/members/:memberId').delete(
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/guidelines/members/${encodeURIComponent(req.params.memberId)}`;
         },
       }),
     );
@@ -192,34 +163,6 @@ export default class ExpressRouteDriver {
         },
       }),
     );
-    router.get(
-      '/users/identifiers/active',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users/identifiers/active?${querystring.stringify(
-            req.query,
-          )}`;
-        },
-      }),
-    );
-
-    router.get(
-      '/users/curators/:collection',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return USER_ROUTES.FETCH_COLLECTION_CURATORS(req.params.collection);
-        },
-      }),
-    );
-
-    router.post(
-      '/users/password',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users/password`;
-        },
-      }),
-    );
 
     router.patch(
       '/learning-objects/:learningObjectId/collections',
@@ -232,62 +175,6 @@ export default class ExpressRouteDriver {
       }),
     );
 
-    router.get(
-      '/users/update',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users/update?${querystring.stringify(req.query)}`;
-        },
-      }),
-    );
-
-    router.get(
-      '/collections/:collectionName/members',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return ADMIN_USER_ROUTES.FETCH_COLLECTION_MEMBERS(
-            req.params.collectionName,
-            req.query,
-          );
-        },
-      }),
-    );
-
-    router.put(
-      '/collections/:collectionName/members/:memberId',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return ADMIN_USER_ROUTES.ASSIGN_COLLECTION_MEMBERSHIP(
-            req.params.collectionName,
-            req.params.memberId,
-          );
-        },
-      }),
-    );
-
-    router.patch(
-      '/collections/:collectionName/members/:memberId',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return ADMIN_USER_ROUTES.EDIT_COLLECTION_MEMBERSHIP(
-            req.params.collectionName,
-            req.params.memberId,
-          );
-        },
-      }),
-    );
-
-    router.delete(
-      '/collections/:collectionName/members/:memberId',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return ADMIN_USER_ROUTES.REMOVE_COLLECTION_MEMBERSHIP(
-            req.params.collectionName,
-            req.params.memberId,
-          );
-        },
-      }),
-    );
     // get the status for the banner
     router.get(
       '/status',
@@ -408,77 +295,6 @@ export default class ExpressRouteDriver {
       }),
     );
 
-    // Welcome page
-    router
-      .route('')
-      .get(
-        proxy(USERS_API, {
-          proxyReqPathResolver: req => {
-            return '/users';
-          },
-        }),
-      )
-      // Register
-      .post(
-        proxy(USERS_API, {
-          proxyReqPathResolver: req => {
-            return '/users';
-          },
-        }),
-      )
-      .patch(
-        proxy(USERS_API, {
-          proxyReqPathResolver: req => {
-            return '/users';
-          },
-        }),
-      );
-    router.get(
-      '/stats',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return STATS_ROUTE.USER_STATS;
-        },
-      }),
-    );
-    // Login
-    router.post(
-      '/tokens',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return '/users/tokens';
-        },
-      }),
-    );
-
-    router.get(
-      '/:id/tokens',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users/${req.params.id}/tokens?${querystring.stringify(
-            req.query,
-          )}`;
-        },
-      }),
-    );
-
-    router.route('/:username/profile').get(
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users/${req.params.username}/profile`;
-        },
-      }),
-    );
-
-    // refresh token
-    router.get(
-      '/tokens/refresh',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return '/users/tokens/refresh';
-        },
-      }),
-    );
     router.all(
       '/:userId/learning-objects/:learningObjectId/submissions',
       proxy(LEARNING_OBJECT_SERVICE_URI, {
@@ -488,68 +304,6 @@ export default class ExpressRouteDriver {
             req.params.learningObjectId,
             req.query,
           );
-        },
-      }),
-    );
-    // Remove account
-    router.route('/:username').delete(
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users/${encodeURIComponent(req.params.username)}`;
-        },
-      }),
-    );
-
-    // Get organizations for typeahead
-    router.route('/organizations').get(
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users/organizations?${querystring.stringify(req.query)}`;
-        },
-      }),
-    );
-
-    router
-      .route('/tokens')
-      // Validate Token
-      .get(
-        proxy(USERS_API, {
-          proxyReqPathResolver: req => {
-            return `/users/tokens`;
-          },
-        }),
-      );
-    // Logout
-    router.delete(
-      '/:username/tokens',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users/${encodeURIComponent(req.params.username)}/tokens`;
-        },
-      }),
-    );
-    router.route('/ota-codes').all(
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users/ota-codes?${querystring.stringify(req.query)}`;
-        },
-        // @ts-ignore
-        userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
-          try {
-            let data = JSON.parse(proxyResData.toString('utf8'));
-            if (data.username) {
-              SocketInteractor.init().sendMessage(
-                data.username,
-                'VERIFIED_EMAIL',
-              );
-              userRes.redirect('http://clark.center');
-              return '';
-            } else {
-              return proxyResData;
-            }
-          } catch (e) {
-            return proxyResData;
-          }
         },
       }),
     );
@@ -589,23 +343,6 @@ export default class ExpressRouteDriver {
       },
     }));
 
-    router.get(
-      '/search',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users?${querystring.stringify(req.query)}`;
-        },
-      }),
-    );
-    router.get(
-      '/validate-captcha',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/validate-captcha?${querystring.stringify(req.query)}`;
-        },
-      }),
-    );
-
     // BUSINESS CARDS
     router.get(
       '/:username/cards',
@@ -613,34 +350,6 @@ export default class ExpressRouteDriver {
         proxyReqPathResolver: req => {
           const username = req.params.username;
           return BUSINESS_CARD_ROUTES.CARD(username, req.query);
-        },
-      }),
-    );
-
-    router.get(
-      '/:username/notifications',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return `/users/${encodeURIComponent(
-            req.params.username,
-          )}/notifications`;
-        },
-      }),
-    );
-    router.get(
-      '/:id/roles',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return ADMIN_USER_ROUTES.FETCH_USER_ROLES(req.params.id);
-        },
-      }),
-    );
-
-    router.get(
-      '/:username',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          return USER_ROUTES.FETCH_USER(req.params.username);
         },
       }),
     );

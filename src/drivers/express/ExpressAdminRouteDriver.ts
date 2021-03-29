@@ -5,11 +5,8 @@ import * as proxy from 'express-http-proxy';
 import * as querystring from 'querystring';
 import {
   ADMIN_LEARNING_OBJECT_ROUTES,
-  ADMIN_USER_ROUTES,
-  ADMIN_MAILER_ROUTES,
 } from '../../routes';
 
-const USERS_API = process.env.USERS_API || 'localhost:4000';
 const LEARNING_OBJECT_SERVICE_URI =
   process.env.LEARNING_OBJECT_SERVICE_URI || 'localhost:5000';
 
@@ -44,26 +41,6 @@ export default class ExpressAdminRouteDriver {
         message: 'Welcome to the Admin C.L.A.R.K. Gateway API',
       });
     });
-
-    // User Routes
-    router.get(
-      '/users',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          const route = ADMIN_USER_ROUTES.FETCH_USERS_WITH_FILTER(req.query);
-          return route;
-        },
-      }),
-    );
-    router.delete(
-      '/users/:id',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          const route = ADMIN_USER_ROUTES.DELETE_USER(req.params.id);
-          return route;
-        },
-      }),
-    );
 
     // Learning Object Routes
     router.get(
@@ -175,35 +152,6 @@ export default class ExpressAdminRouteDriver {
         },
       }),
     );
-
-    // Mailer Routes
-    router.post(
-      '/mail',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          const route = ADMIN_MAILER_ROUTES.SEND_BASIC_EMAIL;
-          return route;
-        },
-      }),
-    );
-    router
-      .route('/mail/templates')
-      .get(
-        proxy(USERS_API, {
-          proxyReqPathResolver: req => {
-            const route = ADMIN_MAILER_ROUTES.GET_AVAILABLE_TEMPLATES;
-            return route;
-          },
-        }),
-      )
-      .post(
-        proxy(USERS_API, {
-          proxyReqPathResolver: req => {
-            const route = ADMIN_MAILER_ROUTES.SEND_TEMPLATE_EMAIL;
-            return route;
-          },
-        }),
-      );
   }
 
 }
