@@ -40,6 +40,10 @@ export class SwaggerDriver {
                         {
                             name: "Rating Service",
                             tags: ['Rating Service']
+                        },
+                        {
+                            name: "Outcome Service",
+                            tags: ['Outcome Service']
                         }
                     ],
                 },
