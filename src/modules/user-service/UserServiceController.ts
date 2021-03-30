@@ -13,30 +13,403 @@ export class UserServiceController implements Controller {
 
         // Routes go here
 
-        // GUIDELINE ROLES
+        /**
+         * @swagger
+         * /guidelines/members:
+         *  get:
+         *      description: Gets users with mapper access group
+         *      tags:
+         *          - User Service
+         *      responses:
+         *          200:
+         *              description: Gets a list of mappers
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          items:
+         *                              $ref: '#/components/schemas/User'
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin
+         */
         router.route('/guidelines/members').get(this.proxyRequest((req: Request) => `/guidelines/members`));
 
+        /**
+         * @swagger
+         * /guidelines/members/{memberId}:
+         *  put:
+         *      description: Adds a new mapper
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: memberId
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the user to give mapper privileges to
+         *      responses:
+         *          201:
+         *              description: CREATED
+         *          400:
+         *              description: BAD REQUEST - User already has the mapper privilege
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin
+         *          404:
+         *              description: NOT FOUND - User not found
+         */
         router.route('/guidelines/members/:memberId').put(this.proxyRequest((req: Request) => `/guidelines/members/${encodeURIComponent(req.params.memberId)}`));
 
+        /**
+         * @swagger
+         * /guidelines/members/{memberId}:
+         *  delete:
+         *      description: Removes the mapper privilege of a user
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: memberId
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the user to revoke privileges of
+         *      responses:
+         *          204:
+         *              description: NO CONTENT
+         *          400:
+         *              description: BAD REQUEST - The user doesn't have the mapper privilege
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin
+         *          404:
+         *              description: NOT FOUND - User not found
+         */
         router.route('/guidelines/members/:memberId').delete(this.proxyRequest((req: Request) => `/guidelines/members/${encodeURIComponent(req.params.memberId)}`));
 
+        /**
+         * @swagger
+         * /users/identifiers/active:
+         *  get:
+         *      description: Checks if a current user is using a username
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: query
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The username to check if in use
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          properties:
+         *                              inUse:
+         *                                  type: boolean
+         *                                  description: True if username is in use, false otherwise
+         *                                  example: true
+         *                                  required: true
+         */
         router.get('/users/identifiers/active', this.proxyRequest((req: Request) => `/users/identifiers/active?${querystring.stringify(req.query)}`));
 
+        /**
+         * @swagger
+         * /users/curators/{collection}:
+         *  get:
+         *      description: Gets curators for a collection
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: collection
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The collection
+         *      responses:
+         *          200:
+         *             description: Gets a list of curators for a collection
+         *             content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          items:
+         *                              $ref: '#/components/schemas/User'
+         *          404:
+         *              description: NOT FOUND - Collection not found
+         */
         router.get('/users/curators/:collection', this.proxyRequest((req: Request) => USER_ROUTES.FETCH_COLLECTION_CURATORS(req.params.collection)));
 
+        /**
+         * @swagger
+         * /users/password:
+         *  post:
+         *      description: Check if password matches
+         *      tags:
+         *          - User Service
+         *      requestBody:
+         *          description: The typed password
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      properties:
+         *                          password:
+         *                              type: string
+         *                              description: The user typed password
+         *                              example: M0ckPa$$word
+         *                              required: true
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          properties:
+         *                              isMatch:
+         *                                  type: boolean
+         *                                  description: True if the username matches the provided password, false otherwise
+         *                                  example: true
+         *                                  required: true
+         */
         router.post('/users/password', this.proxyRequest((req: Request) => `/users/password`));
 
+        /**
+         * @swagger
+         * /users/update:
+         *  get:
+         *      description: Gets a user's information
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: query
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The user's username
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          $ref: '#/components/schemas/User'
+         */
         router.get('/users/update', this.proxyRequest((req: Request) => `/users/update?${querystring.stringify(req.query)}`));
 
+        /**
+         * @swagger
+         * /collections/{collectionName}/members:
+         *  get:
+         *      description: Gets a list of collection reviewers
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: collectionName
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The collection's name
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          items:
+         *                              $ref: '#/components/schemas/User'
+         */
         router.get('/collections/:collectionName/members', this.proxyRequest((req: Request) => ADMIN_USER_ROUTES.FETCH_COLLECTION_MEMBERS(req.params.collectionName, req.query)));
 
+        /**
+         * @swagger
+         * /collections/{collectionName}/members/{memberId}:
+         *  put:
+         *      description: Assign a reviewer to a collection
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: collectionName
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The collection's name
+         *          - in: path
+         *            name: memberId
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the user
+         *      responses:
+         *          200:
+         *              description: OK
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin or collection curator
+         *          404:
+         *              description: NOT FOUND - User or collection not found
+         */
         router.put('/collections/:collectionName/members/:memberId', this.proxyRequest((req: Request) => ADMIN_USER_ROUTES.ASSIGN_COLLECTION_MEMBERSHIP(req.params.collectionName, req.params.memberId)));
 
+        /**
+         * @swagger
+         * /collections/{collectionName}/members/{memberId}:
+         *  patch:
+         *      description: Edits a reviewer's privilege in a collection
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: collectionName
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The collection's name
+         *          - in: path
+         *            name: memberId
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the user
+         *      responses:
+         *          200:
+         *              description: OK
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin or collection curator
+         *          404:
+         *              description: NOT FOUND - User or collection not found
+         */
         router.patch('/collections/:collectionName/members/:memberId', this.proxyRequest((req: Request) => ADMIN_USER_ROUTES.EDIT_COLLECTION_MEMBERSHIP(req.params.collectionName, req.params.memberId)));
 
+        /**
+         * @swagger
+         * /collections/{collectionName}/members/{memberId}:
+         *  delete:
+         *      description: Removes a reviewer's privilege in a collection
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: collectionName
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The collection's name
+         *          - in: path
+         *            name: memberId
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The id of the user
+         *      responses:
+         *          200:
+         *              description: OK
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin or collection curator
+         *          404:
+         *              description: NOT FOUND - User or collection not found
+         */
         router.delete('/collections/:collectionName/members/:memberId', this.proxyRequest((req: Request) => ADMIN_USER_ROUTES.REMOVE_COLLECTION_MEMBERSHIP(req.params.collectionName, req.params.memberId)));
 
-        // Welcome page
+        /**
+         * @swagger
+         * /users:
+         *  get:
+         *      description: Gets an array of users
+         *      tags:
+         *          - User Service
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          properties:
+         *                              users:
+         *                                  type: array
+         *                                  required: true
+         *                                  description: An array of user objects
+         *                                  items:
+         *                                      $ref: '#/components/schemas/User'
+         *                              total:
+         *                                  type: number
+         *                                  required: true
+         *                                  example: 10
+         *                                  description: The total number of users
+         *  post:
+         *      description: Creates a user
+         *      tags:
+         *          - User Service
+         *      requestBody:
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      $ref: '#/components/schemas/UserBody'
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          properties:
+         *                              user:
+         *                                  type: object
+         *                                  $ref: '#/components/schemas/UserBody'
+         *                              tokens:
+         *                                  type: object
+         *                                  properties:
+         *                                      bearer:
+         *                                          type: string
+         *                                          required: true
+         *                                          description: Bearer token
+         *                                      openId:
+         *                                          type: string
+         *                                          required: true
+         *                                          description: The cognito id
+         *                                      user:
+         *                                          type: object
+         *                                          $ref: '#/components/schemas/UserBody'
+         *  patch:
+         *      description: Edits a user's info
+         *      tags:
+         *          - User Service
+         *      requestBody:
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      $ref: '#/components/schemas/UserBody'
+         *      responses:
+         *          200:
+         *              description: OK
+         */
         router.route('/users')
             .get(this.proxyRequest((req: Request) => '/users'))
             // Register
