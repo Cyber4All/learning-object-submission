@@ -81,4 +81,16 @@
  *                      description: The bio of the user
  *                      example: This is a bio
  *                      required: true
+ *          Organization:
+ *              properties:
+ *                  id:
+ *                      type: string
+ *                      description: The id of the organization
+ *                      example: 000000000000000000000000
+ *                      required: true
+ *                  institution:
+ *                      type: string
+ *                      description: The name of the organization
+ *                      example: Towson University
+ *                      required: true
  */

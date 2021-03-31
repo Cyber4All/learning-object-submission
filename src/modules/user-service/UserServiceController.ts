@@ -416,30 +416,320 @@ export class UserServiceController implements Controller {
             .post(this.proxyRequest((req: Request) => '/users'))
             .patch(this.proxyRequest((req: Request) => '/users'));
         
+        /**
+         * @swagger
+         * /users/stats:
+         *  get:
+         *      description: Gets the stats for a user
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: query
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The collection's name
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          properties:
+         *                              accounts:
+         *                                  type: number
+         *                                  example: 1
+         *                                  required: true
+         *                              organizations:
+         *                                  type: number
+         *                                  example: 1
+         *                                  required: true
+         *          500:
+         *              description: INTERNAL SERVICE ERROR - Any error is thrown
+         */
         router.get('/users/stats', this.proxyRequest((req: Request) => STATS_ROUTE.USER_STATS));
         
-        // Login
+        /**
+         * @swagger
+         * /users/tokens:
+         *  post:
+         *      description: Login a user
+         *      tags:
+         *          - User Service
+         *      requestBody:
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      properties:
+         *                          username:
+         *                              description: The user's username
+         *                              example: jdoe1
+         *                              type: string
+         *                              required: true
+         *                          password:
+         *                              description: The user's password
+         *                              example: M0ckPa$$word
+         *                              type: string
+         *                              required: true
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          properties:
+         *                              user:
+         *                                  type: object
+         *                                  $ref: '#/components/schemas/UserBody'
+         *                              tokens:
+         *                                  type: object
+         *                                  properties:
+         *                                      bearer:
+         *                                          type: string
+         *                                          required: true
+         *                                          description: Bearer token
+         *                                      openId:
+         *                                          type: string
+         *                                          required: true
+         *                                          description: The cognito id
+         *                                      user:
+         *                                          type: object
+         *                                          $ref: '#/components/schemas/UserBody'
+         *          400:
+         *              description: BAD REQUEST - Incorrect login credentials
+         */
         router.post('/users/tokens', this.proxyRequest((req: Request) => '/users/tokens'));
 
-        router.get('/users/:id/tokens', this.proxyRequest((req: Request) => `/users/${req.params.id}/tokens?${querystring.stringify(req.query)}`));
-
+        /**
+         * @swagger
+         * /users/{username}/profile:
+         *  get:
+         *      description: Gets a user's profile
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The user's username
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          items:
+         *                              $ref: '#/components/schemas/User'
+         */
         router.route('/users/:username/profile').get(this.proxyRequest((req: Request) => `/users/${req.params.username}/profile`));
 
-        // refresh token
+        /**
+         * @swagger
+         * /users/tokens/refresh:
+         *  get:
+         *      description: Refreshes a user's token
+         *      tags:
+         *          - User Service
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          properties:
+         *                              user:
+         *                                  type: object
+         *                                  $ref: '#/components/schemas/UserBody'
+         *                              tokens:
+         *                                  type: object
+         *                                  properties:
+         *                                      bearer:
+         *                                          type: string
+         *                                          required: true
+         *                                          description: Bearer token
+         *                                      openId:
+         *                                          type: string
+         *                                          required: true
+         *                                          description: The cognito id
+         *                                      user:
+         *                                          type: object
+         *                                          $ref: '#/components/schemas/UserBody'
+         */
         router.get('/users/tokens/refresh', this.proxyRequest((req: Request) => '/users/tokens/refresh'));
 
-        // Remove account
+        /**
+         * @swagger
+         * /users/{username}:
+         *  delete:
+         *      description: Deletes a user by their id
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The user's id
+         *      responses:
+         *          200:
+         *              description: OK
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin
+         */
         router.route('/users/:username').delete(this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}`));
 
-        // Get organizations for typeahead
+        /**
+         * @swagger
+         * /users/organizations:
+         *  get:
+         *      description: Searches for an organization
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: query
+         *            name: query
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The search query
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          items:
+         *                              $ref: '#/components/schemas/Organization'
+         */
         router.route('/users/organizations').get(this.proxyRequest((req: Request) => `/users/organizations?${querystring.stringify(req.query)}`));
 
-        // Validate Token
+        /**
+         * @swagger
+         * /users/tokens:
+         *  get:
+         *      description: Gets the current user object
+         *      tags:
+         *          - User Service
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          items:
+         *                              $ref: '#/components/schemas/User'
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         */
         router.route('/users/tokens').get(this.proxyRequest((req: Request) => `/users/tokens`));
         
-        // Logout
+        /**
+         * @swagger
+         * /users/{username}/tokens:
+         *  delete:
+         *      description: Logs out a user
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The user's username
+         *      responses:
+         *          200:
+         *              description: OK
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         */
         router.delete('/users/:username/tokens', this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}/tokens`));
 
+        /**
+         * @swagger
+         * /users/ota-codes:
+         *  get:
+         *      description: Gets and validates a ota-code then redirects the user
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: query
+         *            name: otaCode
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The ota code to validate
+         *      responses:
+         *          200:
+         *              description: OK - Redirects user to verify email or reset password
+         *  post:
+         *      description: Sends a ota code email
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: query
+         *            name: action
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The type of action for the email
+         *      requestBody:
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      properties:
+         *                          email:
+         *                              type: string
+         *                              required: true
+         *                              description: The email to send the ota code to
+         *                              example: jdoe1@gmail.com
+         *      responses:
+         *          200:
+         *              description: OK
+         *          400:
+         *              description: BAD REQUEST - Invalid action type
+         *  patch:
+         *      description: Resets a user's password
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: query
+         *            name: otaCode
+         *            schema:
+         *                type: string
+         *            required: true
+         *            description: The ota code to validate
+         *      requestBody:
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      properties:
+         *                          payload:
+         *                              type: string
+         *                              required: true
+         *                              description: The new password
+         *      responses:
+         *          200:
+         *              description: OK
+         */
         router.route('/users/ota-codes').all(
             this.proxyRequestWithDecorator(
                 (req: Request) => `/users/ota-codes?${querystring.stringify(req.query)}`,
