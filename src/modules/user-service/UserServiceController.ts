@@ -11,8 +11,6 @@ export class UserServiceController implements Controller {
     buildRouter(): Router {
         const router = Router();
 
-        // Routes go here
-
         /**
          * @swagger
          * /guidelines/members:
