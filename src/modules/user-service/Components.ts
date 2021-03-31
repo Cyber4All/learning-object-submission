@@ -93,4 +93,13 @@
  *                      description: The name of the organization
  *                      example: Towson University
  *                      required: true
+ *          MailTemplate:
+ *              properties:
+ *                  name:
+ *                      type: string
+ *                      description: The name of the sendgrid template
+ *                      required: true
+ *                  templateVariables:
+ *                      type: object
+ *                      description: The data for the template to use
  */

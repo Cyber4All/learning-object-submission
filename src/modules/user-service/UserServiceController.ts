@@ -752,24 +752,321 @@ export class UserServiceController implements Controller {
                 })
         );
 
+        /**
+         * @swagger
+         * /users/search:
+         *  get:
+         *      description: Searches for users given a query
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: query
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The username to search for
+         *          - in: query
+         *            name: name
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The name to search for
+         *          - in: query
+         *            name: email
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The email to search for
+         *          - in: query
+         *            name: organization
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The organization of the user to search for
+         *          - in: query
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The ota code to validate
+         *          - in: query
+         *            name: orderBy
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The value of which to order by (ie. username or name, etc.)
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          items:
+         *                              $ref: '#/components/schemas/User'
+         */
         router.get('/users/search', this.proxyRequest((req: Request) => `/users?${querystring.stringify(req.query)}`));
 
+        /**
+         * @swagger
+         * /validate-captcha:
+         *  get:
+         *      description: Validates the user's captcha
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: query
+         *            name: token
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The token to verify
+         *      responses:
+         *          200:
+         *              description: OK
+         */
         router.get('/validate-captcha', this.proxyRequest((req: Request) => `/validate-captcha?${querystring.stringify(req.query)}`));
 
-        router.get('/users/:username/notifications', this.proxyRequest((req: Request) => `/users/${encodeURIComponent(req.params.username)}/notifications`));
-
+        /**
+         * @swagger
+         * /users/{id}/roles:
+         *  get:
+         *      description: Gets the roles a user has
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: id
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The id of the user
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          items:
+         *                              type: string
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin
+         *          404:
+         *              description: NOT FOUND - Unable to find user
+         */
         router.get('/users/:id/roles', this.proxyRequest((req: Request) => ADMIN_USER_ROUTES.FETCH_USER_ROLES(req.params.id)));
 
+        /**
+         * @swagger
+         * /users/{username}:
+         *  get:
+         *      description: Gets a user by their username
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The username of the user
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          $ref: '#/components/schemas/User'
+         *          400:
+         *              description: BAD REQUEST - Username not provided
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin or editor
+         *          404:
+         *              description: NOT FOUND - Unable to find user
+         */
         router.get('/users/:username', this.proxyRequest((req: Request) => USER_ROUTES.FETCH_USER(req.params.username)));
 
-        // User Routes
+        /**
+         * @swagger
+         * /users:
+         *  get:
+         *      description: Gets a list of users (authenticated)
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: query
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The username to search for
+         *          - in: query
+         *            name: name
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The name to search for
+         *          - in: query
+         *            name: email
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The email to search for
+         *          - in: query
+         *            name: organization
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The organization of the user to search for
+         *          - in: query
+         *            name: username
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The ota code to validate
+         *          - in: query
+         *            name: orderBy
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The value of which to order by (ie. username or name, etc.)
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          items:
+         *                              $ref: '#/components/schemas/User'
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin
+         */
         router.get('/users', this.proxyRequest((req: Request) => ADMIN_USER_ROUTES.FETCH_USERS_WITH_FILTER(req.query)));
 
+        /**
+         * @swagger
+         * /users/{id}:
+         *  delete:
+         *      description: Deletes a user by id
+         *      tags:
+         *          - User Service
+         *      parameters:
+         *          - in: path
+         *            name: id
+         *            schema:
+         *                type: string
+         *            required: false
+         *            description: The id of the user
+         *      responses:
+         *          200:
+         *              description: OK
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin
+         */
         router.delete('/users/:id', this.proxyRequest((req: Request) => ADMIN_USER_ROUTES.DELETE_USER(req.params.id)));
 
-        // Mailer Routes
+        /**
+         * @swagger
+         * /admin/mail:
+         *  post:
+         *      description: Sends a simple email
+         *      tags:
+         *          - User Service
+         *      requestBody:
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      properties:
+         *                          subject:
+         *                              type: string
+         *                              required: true
+         *                              description: The email subject
+         *                              example: Hello World
+         *                          message:
+         *                              type: string
+         *                              required: true
+         *                              description: The email message
+         *                              example: This is a message body
+         *                          email:
+         *                              type: string
+         *                              required: true
+         *                              description: The email to send to
+         *                              example: jdoe1@gmail.com
+         *      responses:
+         *          200:
+         *              description: OK
+         */
         router.post('/admin/mail', this.proxyRequest((req: Request) => ADMIN_MAILER_ROUTES.SEND_BASIC_EMAIL));
 
+        /**
+         * @swagger
+         * /admin/mail/templates:
+         *  get:
+         *      description: Gets the different types of templates
+         *      tags:
+         *          - User Service
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          items:
+         *                              $ref: '#/components/schemas/MailTemplate'
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin
+         *  post:
+         *      description: Sends a templated email to a user
+         *      tags:
+         *          - User Service
+         *      requestBody:
+         *          required: true
+         *          content:
+         *              application/json:
+         *                  schema:
+         *                      type: object
+         *                      properties:
+         *                          subject:
+         *                              type: string
+         *                              required: true
+         *                              description: The email subject
+         *                              example: Hello World
+         *                          template:
+         *                              type: object
+         *                              required: true
+         *                              $ref: '#/components/schemas/MailTemplate'
+         *                          email:
+         *                              type: string
+         *                              required: true
+         *                              description: The email to send to
+         *                              example: jdoe1@gmail.com
+         *      responses:
+         *          200:
+         *              description: OK
+         *          400:
+         *              description: BAD CONTENT - Invalid template name
+         *          401:
+         *              description: UNAUTHENTICATED - User not logged in
+         *          403:
+         *              description: UNAUTHORIZED - User not an admin
+         */
         router.route('/admin/mail/templates')
             .get(this.proxyRequest((req: Request) => ADMIN_MAILER_ROUTES.GET_AVAILABLE_TEMPLATES))
             .post(this.proxyRequest((req: Request) => ADMIN_MAILER_ROUTES.SEND_TEMPLATE_EMAIL));
