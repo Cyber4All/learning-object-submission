@@ -200,4 +200,120 @@
  *                      type: string
  *                      description: The profile image of the changelog author
  *                      required: true
+ *          CollectionMetric:
+ *              required:
+ *                  - collection
+ *                  - metrics
+ *              properties:
+ *                  collection:
+ *                      type: string
+ *                      description: The collection pulling metrics from
+ *                      example: nccp
+ *                  metrics:
+ *                      type: object
+ *                      description: The metrics
+ *                      $ref: '#/components/schemas/CollectionMetricBody'
+ *          CollectionMetricBody:
+ *              required:
+ *                  - saves
+ *                  - downloads
+ *              properties:
+ *                  saves:
+ *                      type: integer
+ *                      description: The number of saves for a particular collection
+ *                      example: 200
+ *                  downloads:
+ *                      type: integer
+ *                      description: The number of downloads for a particular collection
+ *                      example: 100
+ *                  authors:
+ *                      type: array
+ *                      description:
+ *                      items:
+ *                          type: string
+ *                          example: 000000000000000000000000
+ *                  top5Downloads:
+ *                      type: array
+ *                      description: The top downloads of a particular collection
+ *                      items:
+ *                          $ref: '#/components/schemas/Download'
+ *                  statusMetrics:
+ *                      type: object
+ *                      description: The learning object statuses for the collection
+ *                      properties:
+ *                          _id:
+ *                              type: string
+ *                              example: nccp
+ *                              required: true
+ *                              description: The collection name
+ *                          count:
+ *                              type: number
+ *                              example: 0
+ *                              required: true
+ *                              description: The total number of objects
+ *                          released:
+ *                              type: number
+ *                              example: 0
+ *                              required: true
+ *                              description: The number of released objects
+ *                          waiting:
+ *                              type: number
+ *                              example: 0
+ *                              required: true
+ *                              description: The number of in waiting objects
+ *                          peerReview:
+ *                              type: number
+ *                              example: 0
+ *                              required: true
+ *                              description: The number of in review objects
+ *                          proofing:
+ *                              type: number
+ *                              example: 0
+ *                              required: true
+ *                              description: The number of in proofing objects
+ *          Download:
+ *              required:
+ *                  - downloads
+ *                  - learningObjectCuid
+ *              properties:
+ *                  downloads:
+ *                      type: integer
+ *                      description: The number of downloads for a particular learning object
+ *                      example: 100
+ *                  learningObjectCuid:
+ *                      type: string
+ *                      description: The cuid of the learning object
+ *                      example: 00000000-1111-2222-3333-444444444444
+ *          Collection:
+ *              properties:
+ *                  _id:
+ *                      type: string
+ *                      example: 000000000000000000000000
+ *                      required: true
+ *                      description: The collection id
+ *                  name:
+ *                      type: string
+ *                      example: nccp
+ *                      required: true
+ *                      description: The collection name
+ *                  fullName:
+ *                      type: string
+ *                      example: National Cybersecurity Curriculum Program
+ *                      required: false
+ *                      description: The collection's full name
+ *                  abvName:
+ *                      type: string
+ *                      example: nccp
+ *                      required: true
+ *                      description: The collection's abbreviated name
+ *                  hasLogo:
+ *                      type: boolean
+ *                      example: true
+ *                      required: true
+ *                      description: True if the collection has a logo
+ *                  description:
+ *                      type: string
+ *                      example: This is a collection
+ *                      required: true
+ *                      description: Description of the collection
  */
