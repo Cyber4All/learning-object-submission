@@ -52,6 +52,10 @@ export class SwaggerDriver {
                         {
                             name: "Outcome Service",
                             tags: ['Outcome Service']
+                        },
+                        {
+                            name: "Learning Object Service",
+                            tags: ['Learning Object Service']
                         }
                     ],
                 },
@@ -70,6 +74,7 @@ export class SwaggerDriver {
             },
             apis: [
                 './src/modules/**/*.ts',
+                './src/modules/learning-object-service/**/*.ts',
             ]
         };
 

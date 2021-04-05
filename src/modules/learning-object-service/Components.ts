@@ -151,4 +151,53 @@
  *                      description: The uri for the ratings of a learning object
  *                      example: https://api-gateway.clark.center/users/jdoe1/learning-objects/000000000000000000000000/ratings
  *                      required: false
+ *          Changelog:
+ *              properties:
+ *                  cuid:
+ *                      type: string
+ *                      description: The cuid relating to the changelog
+ *                      example: 00000000-1111-2222-3333-444444444444
+ *                      required: true
+ *                  logs:
+ *                      type: array
+ *                      description: The changes made to the object
+ *                      required: true
+ *                      items:
+ *                          $ref: '#/components/schemas/ChangelogLog'
+ *          ChangelogLog:
+ *              properties:
+ *                  date:
+ *                      type: number
+ *                      description: The date the changelog was created in ms
+ *                      example: 0
+ *                      required: true
+ *                  text:
+ *                      type: string
+ *                      description: The changelog text
+ *                      example: This is a change
+ *                      required: true
+ *                  author:
+ *                      type: object
+ *                      $ref: '#/components/schemas/ChangelogAuthor'
+ *          ChangelogAuthor:
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                      description: The id of the changelog author
+ *                      example: 000000000000000000000000
+ *                      required: true
+ *                  name:
+ *                      type: string
+ *                      description: The name of the changelog author
+ *                      example: John Doe
+ *                      required: true
+ *                  role:
+ *                      type: string
+ *                      description: The role of the changelog author
+ *                      example: admin
+ *                      required: true
+ *                  profileImage:
+ *                      type: string
+ *                      description: The profile image of the changelog author
+ *                      required: true
  */
