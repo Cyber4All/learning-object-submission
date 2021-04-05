@@ -9,7 +9,6 @@ import {
   BUSINESS_CARD_ROUTES,
   FILE_UPLOAD_ROUTES,
   STATS_ROUTE,
-  UTILITY_ROUTES,
   ADMIN_LAMBDA_ROUTES,
 } from '../../routes';
 
@@ -17,7 +16,6 @@ const LEARNING_OBJECT_SERVICE_URI =
   process.env.LEARNING_OBJECT_SERVICE_URI || 'localhost:5000';
 const FILE_UPLOAD_API = process.env.FILE_UPLOAD_API || 'localhost:5100';
 const BUSINESS_CARD_API = process.env.BUSINESS_CARD_API || 'localhost:3009';
-const UTILITY_API = process.env.UTILITY_URI || 'localhost:9000';
 const COA_API = process.env.COA_SERVICE || 'localhost:8500';
 
 /**
@@ -171,42 +169,6 @@ export default class ExpressRouteDriver {
           return LEARNING_OBJECT_ROUTES.ADD_LEARNING_OBJECT_TO_COLLECTION(
             req.params.learningObjectId,
           );
-        },
-      }),
-    );
-
-    // get the status for the banner
-    router.get(
-      '/status',
-      proxy(UTILITY_API, {
-        proxyReqPathResolver: req => {
-          return UTILITY_ROUTES.STATUS;
-        },
-      }),
-    );
-    // get the maintenace status for maintenance page
-    router.get(
-      `/maintenance`,
-      proxy(UTILITY_API, {
-        proxyReqPathResolver: req => {
-          return UTILITY_ROUTES.MAINTENANCE;
-        },
-      }),
-    );
-    // get the client version to see if there is an update
-    router.get(
-      '/clientversion/:clientVersion',
-      proxy(UTILITY_API, {
-        proxyReqPathResolver: req => {
-          return `/clientversion/${encodeURIComponent(req.params.clientVersion)}`;
-        },
-      }),
-    );
-    router.get(
-      '/outages',
-      proxy(UTILITY_API, {
-        proxyReqPathResolver: req => {
-          return `/outages?pastIssues=${encodeURIComponent(req.query.pastIssues)}`
         },
       }),
     );
