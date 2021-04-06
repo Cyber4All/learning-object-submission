@@ -316,4 +316,149 @@
  *                      example: This is a collection
  *                      required: true
  *                      description: Description of the collection
+ *          FileMetadata:
+ *              properties:
+ *                  createdDate:
+ *                      type: string
+ *                      example: 0
+ *                      required: true
+ *                      description: The date the file was created
+ *                  description:
+ *                      type: string
+ *                      example: This is a description
+ *                      required: true
+ *                      description: The description of the file
+ *                  extension:
+ *                      type: string
+ *                      example: .pptx
+ *                      required: true
+ *                      description: The file type
+ *                  lastUpdatedDate:
+ *                      type: string
+ *                      example: 0
+ *                      required: true
+ *                      description: The date the file was last updated
+ *                  learningObjectId:
+ *                      type: string
+ *                      example: 000000000000000000000000
+ *                      required: true
+ *                      description: The learning object the file belongs to
+ *                  packageable:
+ *                      type: boolean
+ *                      example: true
+ *                      required: true
+ *                      description: Whether the file can be packaged in a zip file
+ *                  storageRevision:
+ *                      type: number
+ *                      example: 0
+ *                      required: true
+ *                      description: The version number of the file in S3
+ *                  ETag:
+ *                      type: string
+ *                      example: 0
+ *                      required: true
+ *                      description: The server generated hash of the file's content
+ *                  fullPath:
+ *                      type: string
+ *                      example: Labs/lab1.pdf
+ *                      required: true
+ *                      description: The path of the file (including folders and file name)
+ *                  mimeType:
+ *                      type: string
+ *                      example: video/mp4
+ *                      required: true
+ *                      description: The mime type of the file
+ *                  name:
+ *                      type: string
+ *                      example: presentation.pptx
+ *                      required: true
+ *                      description: The name of the file
+ *                  size:
+ *                      type: number
+ *                      example: 1000
+ *                      required: true
+ *                      description: The file size (in bytes)
+ *          File:
+ *              properties:
+ *                  id:
+ *                      type: string
+ *                      example: 000000000000000000000000
+ *                      required: true
+ *                      description: The id of the file
+ *                  name:
+ *                      type: string
+ *                      example: presentation.pptx
+ *                      required: true
+ *                      description: The name of the file
+ *                  fileType:
+ *                      type: string
+ *                      required: true
+ *                      description: The file type
+ *                  extension:
+ *                      type: string
+ *                      example: .pptx
+ *                      required: true
+ *                      description: The file type
+ *                  previewUrl:
+ *                      type: string
+ *                      required: true
+ *                      description: The preview url of the file
+ *                  date:
+ *                      type: string
+ *                      example: 0
+ *                      required: true
+ *                      description: The date the file was last updated
+ *                  fullPath:
+ *                      type: string
+ *                      example: Labs/lab1.pdf
+ *                      required: true
+ *                      description: The path of the file (including folders and file name)
+ *                  size:
+ *                      type: number
+ *                      example: 1000
+ *                      required: true
+ *                      description: The file size (in bytes)
+ *                  description:
+ *                      type: string
+ *                      example: This is a description
+ *                      required: true
+ *                      description: The description of the file
+ *                  packageable:
+ *                      type: boolean
+ *                      example: true
+ *                      required: true
+ *                      description: Whether the file can be packaged in a zip file
+ *                  storageRevision:
+ *                      type: number
+ *                      example: 0
+ *                      required: true
+ *                      description: The version number of the file in S3
+ *          Url:
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      example: This is a title
+ *                      required: true
+ *                      description: The title of the url
+ *                  url:
+ *                      type: string
+ *                      required: true
+ *                      description: The url
+ *          FolderDescription:
+ *              properties:
+ *                  path:
+ *                      type: string
+ *                      required: true
+ *                      description: The folder path
+ *                  description:
+ *                      type: string
+ *                      example: This is a description
+ *                      required: true
+ *                      description: The description of the folder
+ *          PDF:
+ *              properties:
+ *                  name:
+ *                      type: string
+ *                      required: true
+ *                      description: The name of the pdf
  */
