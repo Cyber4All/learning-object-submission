@@ -26,11 +26,7 @@ export class UtilityServiceController implements Controller {
          */
         router.get(
             '/status',
-            proxy(UTILITY_API, {
-                proxyReqPathResolver: req => {
-                    return UTILITY_ROUTES.STATUS;
-                },
-            }),
+            this.proxyRequest((req: Request) => '/status')
         );
 
         /**
@@ -48,11 +44,7 @@ export class UtilityServiceController implements Controller {
          */
         router.get(
             `/maintenance`,
-            proxy(UTILITY_API, {
-                proxyReqPathResolver: req => {
-                    return UTILITY_ROUTES.MAINTENANCE;
-                },
-            }),
+            this.proxyRequest((req: Request) => '/maintenance')
         );
 
          /**
@@ -81,11 +73,7 @@ export class UtilityServiceController implements Controller {
          */
         router.get(
             '/clientversion/:clientVersion',
-            proxy(UTILITY_API, {
-                proxyReqPathResolver: req => {
-                    return `/clientversion/${encodeURIComponent(req.params.clientVersion)}`;
-                },
-            }),
+            //this.proxyRequest((req: Request) => `/clientversion/${encodeURIComponent(req.params.clientVersion)}`)
         );
         
         /**
@@ -109,6 +97,8 @@ export class UtilityServiceController implements Controller {
          *                  application/json:
          *                      schema:
          *                          type: array
+         *                          items:
+         *                              $ref: '#/components/schemas/Outage'
          *                          
          *                      
          *          500:
@@ -116,12 +106,16 @@ export class UtilityServiceController implements Controller {
          */
         router.get(
             '/outages',
-            proxy(UTILITY_API, {
-                proxyReqPathResolver: req => {
-                    return `/outages?pastIssues=${encodeURIComponent(req.query.pastIssues)}`
-                },
-            }),
+            //this.proxyRequest((req: Request) => `/outages?pastIssues=${encodeURIComponent(req.query.pastIssues)}`)
         );
         return router;
+    }
+
+    private proxyRequest(callback: Function) {
+        return proxy(UTILITY_API, {
+            proxyReqPathResolver: req => {
+                return callback(req);
+            },
+        });
     }
 }
