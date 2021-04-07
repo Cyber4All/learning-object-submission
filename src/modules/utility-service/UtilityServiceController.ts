@@ -19,6 +19,10 @@ export class UtilityServiceController implements Controller {
          *      responses:
          *          200:
          *              description: OK - Returns status report
+         *              content:
+         *                  application/json:
+         *                          schema:
+         *                              $ref: '#/components/schemas/Status'
          */
         router.get(
             '/status',
@@ -38,7 +42,9 @@ export class UtilityServiceController implements Controller {
          *          - Utility Service
          *      responses:
          *          200:
-         *              description: OK - Returns the maintenance status from the mongodb downtime collection
+         *              description: OK - Returns the maintenance status as a boolean from the mongodb downtime collection
+         *                      
+         *                  
          */
         router.get(
             `/maintenance`,
@@ -99,6 +105,12 @@ export class UtilityServiceController implements Controller {
          *      responses:
          *          200:
          *              description: OK - Returns arrray of outages
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: array
+         *                          
+         *                      
          *          500:
          *              description: INTERNAL - Unable to get system outages
          */
