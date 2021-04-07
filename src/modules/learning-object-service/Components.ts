@@ -461,4 +461,111 @@
  *                      type: string
  *                      required: true
  *                      description: The name of the pdf
+ *          LearningObjectStats:
+ *              properties:
+ *                  downloads:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of object downloads
+ *                  saves:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of object library saves
+ *                  review:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of in review objects
+ *                  total:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The total number of objects
+ *                  released:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of released objects
+ *                  lengths:
+ *                      type: object
+ *                      $ref: '#/components/schemas/LearningObjectStatsLength'
+ *                  blooms_distribution:
+ *                      type: object
+ *                      $ref: '#/components/schemas/LearningObjectStatsBloom'
+ *                  status:
+ *                      type: object
+ *                      $ref: '#/components/schemas/LearningObjectStatsStatus'
+ *                  collections:
+ *                      type: object
+ *                      $ref: '#/components/schemas/LearningObjectStatsCollections'
+ *          LearningObjectStatsCollections:
+ *              properties:
+ *                  numbers:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of collections
+ *          LearningObjectStatsStatus:
+ *              properties:
+ *                  waiting:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of in waiting objects
+ *                  peerReview:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of in review objects
+ *                  proofing:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of in proofing objects
+ *          LearningObjectStatsBloom:
+ *              properties:
+ *                  apply:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of apply typed outcomes
+ *                  evaluate:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of evaluate typed outcomes
+ *                  remember:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of remember typed outcomes
+ *          LearningObjectStatsLength:
+ *              properties:
+ *                  nanomodule:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of nanomodule length objects
+ *                  micromodule:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of micromodule length objects
+ *                  module:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of module length objects
+ *                  unit:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of unit length objects
+ *                  course:
+ *                      type: number
+ *                      example: 100
+ *                      required: true
+ *                      description: The number of course length objects
  */

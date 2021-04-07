@@ -10,11 +10,22 @@ export class StatsController implements Controller {
     buildRouter(): Router {
         const router = Router();
 
-        // Routes go here
-
-        router.get('/collections/stats', this.proxyRequest((req: Request) => `/collections/stats`));
-
-        router.get('/stats', this.proxyRequest((req: Request) => STATS_ROUTE.LEARNING_OBJECT_STATS));
+        /**
+         * @swagger
+         * /learning-objects/stats:
+         *  get:
+         *      description: Gets stats on objects
+         *      tags:
+         *          - Learning Object Service
+         *      responses:
+         *          200:
+         *              description: OK
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          $ref: '#/components/schemas/LearningObjectStats'
+         */
+        router.get('/learning-objects/stats', this.proxyRequest((req: Request) => STATS_ROUTE.LEARNING_OBJECT_STATS));
 
         return router;
     }
