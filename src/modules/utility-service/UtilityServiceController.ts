@@ -1,7 +1,7 @@
 import { Router } from "express";
 import proxy = require("express-http-proxy");
+import { Request } from "express";
 import { Controller } from "../../interfaces/Controller";
-import { UTILITY_ROUTES } from "../../routes";
 
 const UTILITY_API = process.env.UTILITY_URI || 'localhost:9000';
 
@@ -73,7 +73,7 @@ export class UtilityServiceController implements Controller {
          */
         router.get(
             '/clientversion/:clientVersion',
-            //this.proxyRequest((req: Request) => `/clientversion/${encodeURIComponent(req.params.clientVersion)}`)
+            this.proxyRequest((req: Request) => `/clientversion/${encodeURIComponent(req.params.clientVersion)}`)
         );
         
         /**
@@ -106,7 +106,7 @@ export class UtilityServiceController implements Controller {
          */
         router.get(
             '/outages',
-            //this.proxyRequest((req: Request) => `/outages?pastIssues=${encodeURIComponent(req.query.pastIssues)}`)
+            this.proxyRequest((req: Request) => `/outages?pastIssues=${encodeURIComponent(req.query.pastIssues)}`)
         );
         return router;
     }
