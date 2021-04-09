@@ -568,4 +568,62 @@
  *                      example: 100
  *                      required: true
  *                      description: The number of course length objects
+ *          Outcome:
+ *              properties:
+ *                  id:
+ *                      type: string
+ *                      example: 000000000000000000000000
+ *                      required: true
+ *                      description: The id of the outcome
+ *                  bloom:
+ *                      type: string
+ *                      example: Remember
+ *                      required: true
+ *                      description: The outcome's bloom type
+ *                  verb:
+ *                      type: string
+ *                      example: Classify
+ *                      required: true
+ *                      description: The outcome's verb
+ *                  text:
+ *                      type: string
+ *                      example: that you can't divide by 0
+ *                      required: true
+ *                      description: The outcome's text
+ *                  mappings:
+ *                      type: array
+ *                      items:
+ *                          $ref: '#/components/schemas/StandardOutcome'
+ *          StandardOutcome:
+ *              properties:
+ *                  id:
+ *                      type: string
+ *                      example: 000000000000000000000000
+ *                      required: true
+ *                      description: The id of the standard outcome
+ *                  author:
+ *                      type: string
+ *                      example: CS2013
+ *                      required: true
+ *                      description: The organization who created the outcome
+ *                  source:
+ *                      type: string
+ *                      example: CS2013
+ *                      required: true
+ *                      description: The shortened organization who created the outcome
+ *                  name:
+ *                      type: string
+ *                      example: Algorithmic Strategies
+ *                      required: true
+ *                      description: The type of the outcome
+ *                  date:
+ *                      type: string
+ *                      example: 2013
+ *                      required: true
+ *                      description: The year the outcome was made
+ *                  outcome:
+ *                      type: string
+ *                      example: This is a outcome
+ *                      required: true
+ *                      description: The outcome text
  */
