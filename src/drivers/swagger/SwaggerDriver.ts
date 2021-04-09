@@ -56,6 +56,10 @@ export class SwaggerDriver {
                         {
                             name: "User Service",
                             tags: ['User Service']
+                        },
+                        {
+                            name: "Utility Service",
+                            tags: ['Utility Service']
                         }
                     ],
                 },
