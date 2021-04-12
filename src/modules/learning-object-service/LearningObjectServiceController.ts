@@ -6,7 +6,6 @@ import { FileManagerController } from "./fileManager/FileManagerController";
 import { ObjectsController } from "./objects/ObjectsController";
 import { OutcomesController } from "./outcomes/OutcomesController";
 import { RevisionsController } from "./revisions/RevisionsController";
-import { SearchController } from "./search/SearchController";
 import { StatsController } from "./stats/StatsController";
 import { SubmissionsController } from "./submissions/SubmissionsController";
 
@@ -21,7 +20,6 @@ export class LearningObjectServiceController implements Controller {
         router.use(new ObjectsController().buildRouter());
         router.use(new OutcomesController().buildRouter());
         router.use(new RevisionsController().buildRouter());
-        router.use(new SearchController().buildRouter());
         router.use(new StatsController().buildRouter());
         router.use(new SubmissionsController().buildRouter());
 
