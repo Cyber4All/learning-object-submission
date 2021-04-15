@@ -56,6 +56,14 @@ export class SwaggerDriver {
                         {
                             name: "Learning Object Service",
                             tags: ['Learning Object Service']
+                        },
+                        {
+                            name: "User Service",
+                            tags: ['User Service']
+                        },
+                        {
+                            name: "Utility Service",
+                            tags: ['Utility Service']
                         }
                     ],
                 },

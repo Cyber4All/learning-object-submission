@@ -1,13 +1,6 @@
 import 'dotenv/config';
 import * as express from 'express';
 import { Router } from 'express';
-import * as proxy from 'express-http-proxy';
-import {
-  ADMIN_USER_ROUTES,
-  ADMIN_MAILER_ROUTES,
-} from '../../routes';
-
-const USERS_API = process.env.USERS_API || 'localhost:4000';
 
 /**
  * Serves as a factory for producing a router for the express app.rt
@@ -39,55 +32,6 @@ export default class ExpressAdminRouteDriver {
         message: 'Welcome to the Admin C.L.A.R.K. Gateway API',
       });
     });
-
-    // User Routes
-    router.get(
-      '/users',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          const route = ADMIN_USER_ROUTES.FETCH_USERS_WITH_FILTER(req.query);
-          return route;
-        },
-      }),
-    );
-    router.delete(
-      '/users/:id',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          const route = ADMIN_USER_ROUTES.DELETE_USER(req.params.id);
-          return route;
-        },
-      }),
-    );
-
-    // Mailer Routes
-    router.post(
-      '/mail',
-      proxy(USERS_API, {
-        proxyReqPathResolver: req => {
-          const route = ADMIN_MAILER_ROUTES.SEND_BASIC_EMAIL;
-          return route;
-        },
-      }),
-    );
-    router
-      .route('/mail/templates')
-      .get(
-        proxy(USERS_API, {
-          proxyReqPathResolver: req => {
-            const route = ADMIN_MAILER_ROUTES.GET_AVAILABLE_TEMPLATES;
-            return route;
-          },
-        }),
-      )
-      .post(
-        proxy(USERS_API, {
-          proxyReqPathResolver: req => {
-            const route = ADMIN_MAILER_ROUTES.SEND_TEMPLATE_EMAIL;
-            return route;
-          },
-        }),
-      );
   }
 
 }
