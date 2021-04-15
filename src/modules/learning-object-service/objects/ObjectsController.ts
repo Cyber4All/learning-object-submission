@@ -1,11 +1,12 @@
 import { Router, Request } from "express";
 import proxy = require("express-http-proxy");
 import { Controller } from "../../../interfaces/Controller";
-import { ADMIN_LEARNING_OBJECT_ROUTES, LEARNING_OBJECT_ROUTES } from "../../../routes";
+import { ADMIN_LAMBDA_ROUTES, ADMIN_LEARNING_OBJECT_ROUTES, LEARNING_OBJECT_ROUTES } from "../../../routes";
 import * as querystring from 'querystring';
 
 const LEARNING_OBJECT_SERVICE_URI =
   process.env.LEARNING_OBJECT_SERVICE_URI || 'localhost:5000';
+const COA_API = process.env.COA_SERVICE || 'localhost:8500';
 
 export class ObjectsController implements Controller {
   buildRouter(): Router {
@@ -578,6 +579,49 @@ export class ObjectsController implements Controller {
      */
     router.delete('/admin/users/:username/learning-objects/multiple/:learningObjectIDs', this.proxyRequest((req: Request) => ADMIN_LEARNING_OBJECT_ROUTES.DELETE_MULTIPLE_LEARNING_OBJECTS(req.params.username, req.params.learningObjectIDs)));
 
+    /**
+     * @swagger
+     * /users/{userId}/learning-objects/{learningObjectId}/change-author:
+     *  post:
+     *    description: Changes a object's author
+     *    tags:
+     *      - Learning Object Service
+     *    parameters:
+     *      - in: path
+     *        name: userId
+     *        schema:
+     *          type: string
+     *        required: true
+     *        description: The user id of the object author
+     *      - in: path
+     *        name: learningObjectId
+     *        schema:
+     *          type: string
+     *        required: true
+     *        description: The object id
+     *    requestBody:
+     *      content:
+     *        application/json:
+     *          schema:
+     *            type: object
+     *            properties:
+     *              author:
+     *                type: string
+     *                description: The new author id
+     *                required: true
+     *                example: 000000000000000000000000
+     *    responses:
+     *      200:
+     *        description: OK
+     *      401:
+     *        description: UNAUTHENTICATED - User not logged in
+     *      403:
+     *        description: UNAUTHORIZED - User is not privileged
+     *      404:
+     *        description: NOT FOUND - User or object not found
+     */
+    router.route('/users/:userId/learning-objects/:learningObjectId/change-author').post(this.proxyLambdaRequest((req: Request) => ADMIN_LAMBDA_ROUTES.CHANGE_AUTHOR(req.params.userId, req.params.learningObjectId)));
+    
     return router;
   }
 
@@ -586,6 +630,14 @@ export class ObjectsController implements Controller {
       proxyReqPathResolver: req => {
         return callback(req);
       },
+    });
+  }
+
+  private proxyLambdaRequest(callback: Function) {
+    return proxy(COA_API, {
+      proxyReqPathResolver: req => {
+        return callback(req);
+      }
     });
   }
 }
