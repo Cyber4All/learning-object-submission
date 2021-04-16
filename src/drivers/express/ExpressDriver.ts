@@ -3,7 +3,6 @@ import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 import * as http from 'http';
 import { enforceTokenAccess } from '../middleware/jwt.config';
-import { ExpressRouteDriver, ExpressAdminRouteDriver } from '../drivers';
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
 import { Server } from "socket.io";
@@ -68,11 +67,12 @@ export class ExpressDriver {
       }
     });
 
-    // Set our api routes
-    this.app.use('/', ExpressRouteDriver.buildRouter());
-
-    // Set Admin Middleware
-    this.app.use('/admin', ExpressAdminRouteDriver.buildRouter());
+    // Welcome message
+    this.app.get('/', function(req, res) {
+      res.json({
+        message: 'Welcome to the C.L.A.R.K. Gateway API',
+      });
+    });
 
     // Set up the different controllers
     this.app.use(new FeatureServiceController().buildRouter());
