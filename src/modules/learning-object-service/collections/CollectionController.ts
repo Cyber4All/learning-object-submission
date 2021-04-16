@@ -97,6 +97,8 @@ export class CollectionController implements Controller {
     router.get('/collections', this.proxyRequest((req: Request) => LEARNING_OBJECT_ROUTES.GET_COLLECTIONS));
 
     /**
+     * TODO: This will be deprecated
+     * 
      * @swagger
      * /learning-objects/{learningObjectId}/collections:
      *  patch:
