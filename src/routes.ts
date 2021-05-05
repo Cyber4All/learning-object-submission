@@ -42,11 +42,6 @@ export const LEARNING_OBJECT_ROUTES = {
       authorUsername,
     )}/learning-objects/${encodeURIComponent(id)}`;
   },
-  LOAD_LEARNING_OBJECT(username: string, learningObjectName: string) {
-    return `/learning-objects/${encodeURIComponent(
-      username,
-    )}/${encodeURIComponent(learningObjectName)}`;
-  },
   LOAD_LEARNING_OBJECT_SUMMARY(username: string) {
     return `/users/${encodeURIComponent(username)}/learning-objects`;
   },
@@ -304,7 +299,6 @@ export const ADMIN_MAILER_ROUTES = {
 
 export const STATS_ROUTE = {
   USER_STATS: '/users/stats',
-  OUTCOME_STATS: '/outcomes/stats',
   LEARNING_OBJECT_STATS: '/learning-objects/stats',
 };
 

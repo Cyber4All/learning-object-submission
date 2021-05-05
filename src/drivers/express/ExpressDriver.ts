@@ -3,13 +3,21 @@ import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 import * as http from 'http';
 import { enforceTokenAccess } from '../middleware/jwt.config';
-import { ExpressRouteDriver, ExpressAdminRouteDriver } from '../drivers';
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
 import { Server } from "socket.io";
 import { SocketInteractor } from '../../interactors/SocketInteractor';
 import { config, errorHandler, requestHandler } from 'raven';
 import * as dotenv from 'dotenv';
+import { SwaggerDriver } from '../swagger/SwaggerDriver';
+import { FeatureServiceController } from '../../modules/feature-service/FeatureServiceController';
+import { GuidelineServiceController } from '../../modules/guideline-service/GuidelineServiceController';
+import { LearningObjectServiceController } from '../../modules/learning-object-service/LearningObjectServiceController';
+import { LibraryServiceController } from '../../modules/library-service/LibraryServiceController';
+import { NotificationServiceController } from '../../modules/notification-service/NotificationServiceController';
+import { RatingServiceController } from '../../modules/rating-service/RatingServiceController';
+import { UserServiceController } from '../../modules/user-service/UserServiceController';
+import { UtilityServiceController } from '../../modules/utility-service/UtilityServiceController';
 
 var url = require('url');
 
@@ -59,17 +67,30 @@ export class ExpressDriver {
       }
     });
 
-    // Set our api routes
-    this.app.use('/', ExpressRouteDriver.buildRouter());
+    // Welcome message
+    this.app.get('/', function(req, res) {
+      res.json({
+        message: 'Welcome to the C.L.A.R.K. Gateway API',
+      });
+    });
 
-    // Set Admin Middleware
-    this.app.use('/admin', ExpressAdminRouteDriver.buildRouter());
+    // Set up the different controllers
+    this.app.use(new FeatureServiceController().buildRouter());
+    this.app.use(new GuidelineServiceController().buildRouter());
+    this.app.use(new LearningObjectServiceController().buildRouter());
+    this.app.use(new LibraryServiceController().buildRouter());
+    this.app.use(new NotificationServiceController().buildRouter());
+    this.app.use(new RatingServiceController().buildRouter());
+    this.app.use(new UserServiceController().buildRouter());
+    this.app.use(new UtilityServiceController().buildRouter());
 
     /**
      * Get port from environment and store in Express.
      */
     const port = process.env.PORT || '3000';
     this.app.set('port', port);
+
+    SwaggerDriver.buildDocs(this.app);
 
     /**
      * Create HTTP server.
