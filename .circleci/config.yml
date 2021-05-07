@@ -15,12 +15,18 @@ jobs:
       - run:
           name: Build Application
           command: npm run build
+      - run:
+          name: Uninstall Dev Dependencies
+          command: npm uninstall --only=dev
       - persist_to_workspace: 
           root: ./
           paths: 
               - ./dist
               - ./package.json
               - ./.elasticbeanstalk
+              - ./.ebextensions
+              - ./docs
+              - ./node_modules
   deploy:
     <<: *defaults
     steps:
@@ -31,11 +37,8 @@ jobs:
           command: |
             mkdir ~/.aws && printf "[profile default]\naws_access_key_id = ${AWS_ACCESS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" > ~/.aws/config
       - run: 
-          name: Copy package.json
-          command: cp ./package.json ./dist
-      - run: 
           name: Zip dist
-          command: cd ./dist; zip -r ../dist.zip . *; cd ..
+          command: zip -r dist.zip . *
       - run:
           name: Deploy to Elastic Beanstalk 
           command: eb deploy Gateway-API --verbose --label Gateway-API-v$(node -p "require('./package.json').version")
