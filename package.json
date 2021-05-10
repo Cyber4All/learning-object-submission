@@ -7,6 +7,7 @@
     "start": "nodemon",
     "serve": "node -r ts-node/register ./src/app.ts",
     "serve:debug": "node --inspect=5858 -r ts-node/register ./src/app.ts",
+    "serve:prod": "node dist/app.js",
     "build": "tsc",
     "lint": "node_modules/.bin/tslint --project ./src/**",
     "pack": "npm run build && cp ./package.json ./dist && cd ./dist && zip -r ../dist.zip  ./* & cd ..",
