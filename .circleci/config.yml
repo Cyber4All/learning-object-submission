@@ -40,11 +40,8 @@ jobs:
           name: Zip dist
           command: zip -r dist.zip . *
       - run:
-          name: Show Content
-          command: ls
-      # - run:
-      #     name: Deploy to Elastic Beanstalk 
-      #     command: eb deploy Gateway-API --verbose --label Gateway-API-v$(node -p "require('./package.json').version")
+          name: Deploy to Elastic Beanstalk 
+          command: eb deploy Gateway-API --verbose --label Gateway-API-v$(node -p "require('./package.json').version")
 workflows:
   version: 2
   build:
