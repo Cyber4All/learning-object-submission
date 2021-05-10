@@ -15,23 +15,23 @@ jobs:
       - run:
           name: Build Application
           command: npm run build
-      - run:
-          name: Uninstall Dev Dependencies
-          command: npm uninstall --only=dev
       - persist_to_workspace: 
           root: ./
           paths: 
               - ./dist
               - ./package.json
+              - ./package-lock.json
               - ./.elasticbeanstalk
-              - ./.ebextensions
               - ./docs
-              - ./node_modules
+              - ./Procfile
   deploy:
     <<: *defaults
     steps:
       - attach_workspace : 
           at: ~/CLARK-Gateway
+      - run:
+          name: Install prod dependencies
+          command: npm install --only=prod
       - run:
           name: Setup AWS credentials
           command: |
@@ -40,8 +40,11 @@ jobs:
           name: Zip dist
           command: zip -r dist.zip . *
       - run:
-          name: Deploy to Elastic Beanstalk 
-          command: eb deploy Gateway-API --verbose --label Gateway-API-v$(node -p "require('./package.json').version")
+          name: Show Content
+          command: ls
+      # - run:
+      #     name: Deploy to Elastic Beanstalk 
+      #     command: eb deploy Gateway-API --verbose --label Gateway-API-v$(node -p "require('./package.json').version")
 workflows:
   version: 2
   build:
