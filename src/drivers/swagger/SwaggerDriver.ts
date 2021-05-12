@@ -95,9 +95,9 @@ export class SwaggerDriver {
                     console.error(err);
                 }
             });
-
-            SwaggerDriver.buildDocRoutes(app);
         }
+        
+        SwaggerDriver.buildDocRoutes(app);
     }
 
     /**
