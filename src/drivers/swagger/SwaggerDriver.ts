@@ -2,7 +2,7 @@ import { Response } from 'express';
 import * as fs from 'fs';
 import * as swaggerJsdoc from 'swagger-jsdoc';
 
-const version = require('../../../package.json').version;
+const version = process.env.NODE_ENV !== 'production' ? require('../../../package.json').version : '';
 
 export class SwaggerDriver {
     /**
@@ -86,16 +86,18 @@ export class SwaggerDriver {
             ]
         };
 
-        const specs = swaggerJsdoc(options);
+        if (process.env.NODE_ENV !== 'production') {
+            const specs = swaggerJsdoc(options);
 
-        // Write specs object out as a swagger.json file
-        fs.writeFile('docs/swagger.json', JSON.stringify(specs), (err: any) => {
-            if (err) {
-                console.error(err);
-            }
-        });
+            // Write specs object out as a swagger.json file
+            fs.writeFile('docs/swagger.json', JSON.stringify(specs), (err: any) => {
+                if (err) {
+                    console.error(err);
+                }
+            });
 
-        SwaggerDriver.buildDocRoutes(app);
+            SwaggerDriver.buildDocRoutes(app);
+        }
     }
 
     /**
