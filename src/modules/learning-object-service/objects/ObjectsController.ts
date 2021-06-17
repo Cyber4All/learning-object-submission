@@ -622,6 +622,51 @@ export class ObjectsController implements Controller {
      */
     router.route('/users/:userId/learning-objects/:learningObjectId/change-author').post(this.proxyLambdaRequest((req: Request) => ADMIN_LAMBDA_ROUTES.CHANGE_AUTHOR(req.params.userId, req.params.learningObjectId)));
     
+
+          /**
+     * @swagger
+     * /users/{username}/learning-objects/{id}/status:
+     *  patch:
+     *    description: Changes the status of a learning-object
+     *    tags:
+     *      - Learning Object Service
+     *    parameters:
+     *      - in: path
+     *        name: username
+     *        schema:
+     *          type: string
+     *        required: true
+     *        description: The user id of the object author
+     *      - in: path
+     *        name: id
+     *        schema:
+     *          type: string
+     *        required: true
+     *        description: The object id
+     *    requestBody:
+     *      content:
+     *        application/json:
+     *          schema:
+     *            type: object
+     *            properties:
+     *              status:
+     *                type: string
+     *                description: The desired status of the learning object
+     *                required: true
+     *                example: proofing
+     *    responses:
+     *      200:
+     *        description: OK
+     *      400:
+     *        description: BAD REQUEST - Object is not eligible for the specified status change
+     *      401:
+     *        description: UNAUTHENTICATED - User not logged in
+     *      403:
+     *        description: UNAUTHORIZED - User is not privileged
+     *      404:
+     *        description: NOT FOUND - User or object not found
+     */
+           router.patch('/users/:username/learning-objects/:id/status', this.proxyRequest((req: Request) => `/users/:username/learning-objects/${encodeURIComponent(req.params.id)}/status`));
     return router;
   }
 
