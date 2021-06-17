@@ -623,10 +623,10 @@ export class ObjectsController implements Controller {
     router.route('/users/:userId/learning-objects/:learningObjectId/change-author').post(this.proxyLambdaRequest((req: Request) => ADMIN_LAMBDA_ROUTES.CHANGE_AUTHOR(req.params.userId, req.params.learningObjectId)));
     
 
-          /**
+    /**
      * @swagger
      * /users/{username}/learning-objects/{id}/status:
-     *  patch:
+     *  post:
      *    description: Changes the status of a learning-object
      *    tags:
      *      - Learning Object Service
@@ -666,7 +666,7 @@ export class ObjectsController implements Controller {
      *      404:
      *        description: NOT FOUND - User or object not found
      */
-           router.patch('/users/:username/learning-objects/:id/status', this.proxyRequest((req: Request) => `/users/:username/learning-objects/${encodeURIComponent(req.params.id)}/status`));
+    router.post('/users/:username/learning-objects/:id/status', this.proxyRequest((req: Request) => `/users/:username/learning-objects/${encodeURIComponent(req.params.id)}/status`));
     return router;
   }
 
